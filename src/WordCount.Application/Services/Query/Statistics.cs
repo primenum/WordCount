@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using WordCount.Infrastructure;
 using WordCount.Infrastructure.PersistanceImplementaton;
+using WordCount.Infrastructure.Service;
 
 namespace WordCount.Application.Services.Query
 {
     internal class Statistics : IStatistics
     {
-        private readonly IPersistanceFactory _persistanceFactory;
+        private readonly IPersistance _persistance;
 
-        public Statistics(IPersistanceFactory persistanceFactory)
+        public Statistics(IPersistance persistance)
         {
-            _persistanceFactory = persistanceFactory;
+            _persistance = persistance;
         }
         public int GetWordCount(string key)
         {
-            IPersistance persistanceImplementation =  _persistanceFactory.GetService<IPersistanceInMemory>();
-            var count  = persistanceImplementation.GetCount(key);
+            var count  = _persistance.GetCount(key);
             return count;
         }
     }

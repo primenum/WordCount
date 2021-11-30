@@ -2,18 +2,19 @@
 using System.Text;
 using WordCount.Infrastructure;
 using WordCount.Infrastructure.PersistanceImplementaton;
+using WordCount.Infrastructure.Service;
 
 namespace WordCount.Application.Services.DataProcess
 {
     internal class FileDataProcess : IFileDataProcess
     {
         private readonly IWordCounter _wordCounter;
-        private readonly IPersistanceFactory _persistanceFactory;
+        private readonly IPersistance _persistance;
 
-        public FileDataProcess(IWordCounter wordCounter, IPersistanceFactory persistanceFactory)
+        public FileDataProcess(IWordCounter wordCounter, IPersistance persistance)
         {
             _wordCounter = wordCounter;
-            _persistanceFactory = persistanceFactory;
+            _persistance = persistance;
         }
 
         public void DataProcess(string filepath)
@@ -28,8 +29,7 @@ namespace WordCount.Application.Services.DataProcess
             using (FileStream fs = new FileStream(filepath, FileMode.Open) )
             {
                 var wordsCount = _wordCounter.CountWords(fs);
-                IPersistance persistanceImpl = _persistanceFactory.GetService<IPersistanceInMemory>();
-                persistanceImpl.AddOrUpdate(wordsCount);
+                _persistance.AddOrUpdate(wordsCount);
                 fs.Close();
             }
 

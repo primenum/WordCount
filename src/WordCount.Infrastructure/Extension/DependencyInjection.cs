@@ -1,5 +1,7 @@
 ﻿using WordCount.Infrastructure;
 using WordCount.Infrastructure.PersistanceImplementaton;
+using WordCount.Infrastructure.Service;
+using WordCount.Infrastructure.Service.Rest;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -7,8 +9,10 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddInfrastructureDependacies(this IServiceCollection services)
         {
-            services.AddTransient<IPersistanceFactory, PersistanceFactory>();
             services.AddSingleton<IPersistanceInMemory, InMemory>();
+            services.AddTransient<IPersistanceFactory, PersistanceFactory>();
+            services.AddTransient<IPersistance, Persistance>();
+            services.AddScoped<IRest, RestImplementation>();
             return services;
         }
     }

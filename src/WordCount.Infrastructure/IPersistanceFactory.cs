@@ -1,7 +1,7 @@
 ﻿namespace WordCount.Infrastructure
 {
-    public interface IPersistanceFactory
+    internal interface IPersistanceFactory
     {
-        T GetService<T>() where T : PersistanceImplementaton.IPersistance;
+        T GetService<T>() where T : PersistanceImplementaton.IPersistanceImplemenation;
     }
 }

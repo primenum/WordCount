@@ -13,7 +13,7 @@ namespace WordCount.Infrastructure
         {
             _serviceProvider = serviceProvider;
         }
-        public T GetService<T>() where T : IPersistance
+        public T GetService<T>() where T : IPersistanceImplemenation
         {
             var svc = _serviceProvider.GetService(typeof(T));
             if (svc == null)
