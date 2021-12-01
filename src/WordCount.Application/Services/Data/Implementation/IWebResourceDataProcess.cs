@@ -1,4 +1,5 @@
-﻿namespace WordCount.Application.Services.DataProcess
+﻿namespace WordCount.Application.Services.Data.Implementation
+
 {
     public interface IWebResourceDataProcess : IDataProcess
     {

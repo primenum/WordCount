@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace WordCount.Application.Services.DataProcess
+namespace WordCount.Application.Services.Data
 {
     internal class WordCounter : IWordCounter
     {

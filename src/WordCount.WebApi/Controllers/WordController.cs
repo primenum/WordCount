@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WordCount.Application.Services.DataProcess;
+using WordCount.Application.Services.Data;
 using WordCount.Application.Services.Query;
 
 namespace WordCount.Exercise.Controllers
@@ -10,12 +11,12 @@ namespace WordCount.Exercise.Controllers
     [Route("[controller]")]
     public class WordController : ControllerBase
     {
-        private readonly IDataProcessFactory _dataProcessFactory;
+        private readonly IDataAnalize _dataAnalize;
         private readonly IStatistics _statistsics;
 
-        public WordController(IDataProcessFactory dataProcessFactory, IStatistics statistsics)
+        public WordController(IDataAnalize dataAnalize, IStatistics statistsics)
         {
-            _dataProcessFactory = dataProcessFactory;
+            _dataAnalize = dataAnalize;
             _statistsics = statistsics;
         }
 
@@ -30,26 +31,30 @@ namespace WordCount.Exercise.Controllers
                 return BadRequest("User input invalid");
 
 
-            Task[] tasks = new Task[2];
+            List<Task> tasks = new List<Task>();
 
 
             //if exception occurs in any of this tasks all request will have an error
 
-            tasks[0] = Task.Run(() =>
+            ///run all task in parallel
+            tasks.Add(Task.Run(() =>
             {
-                var dp = _dataProcessFactory.GetService<ITextDataProcess>();
-                dp.DataProcess(input.FreeText);
-            });
+                _dataAnalize.AnalyzeFreeText(input.FreeText);
+            }));
 
-            tasks[1] = Task.Run(() =>
+            tasks.Add(Task.Run(() =>
             {
-                var dp = _dataProcessFactory.GetService<IFileDataProcess>();
+                _dataAnalize.AnalyzeFreeText(input.FilePath);
                 
-                dp.DataProcess(input.FilePath);
-            });
+            }));
 
+            tasks.Add(Task.Run(() =>
+            {
+                _dataAnalize.AnalyzeWebResource(input.ResourceUrl);
 
-            Task.WaitAll(tasks);
+            }));
+
+            Task.WaitAll(tasks.ToArray());
 
             return Ok(new { status = "ok", timeTaken = $"{t1.ElapsedMilliseconds} (ms)" });
         }

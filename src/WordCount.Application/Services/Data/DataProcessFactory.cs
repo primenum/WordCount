@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WordCount.Application.Services.DataProcess
+namespace WordCount.Application.Services.Data
 {
     internal class DataProcessFactory : IDataProcessFactory
     {

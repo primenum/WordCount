@@ -6,7 +6,8 @@ using WordCount.Infrastructure.PersistanceImplementaton;
 using WordCount.Infrastructure.Service;
 using WordCount.Infrastructure.Service.Rest;
 
-namespace WordCount.Application.Services.DataProcess
+namespace WordCount.Application.Services.Data.Implementation
+
 {
     internal class WebResourceDataProcess : IWebResourceDataProcess
     {
@@ -31,15 +32,16 @@ namespace WordCount.Application.Services.DataProcess
                 throw new UriFormatException($"Invalid absolute URI: {url}");
             }
 
-            
 
+            var response = _restService.GetAsync(uri).Result;
 
-            using (FileStream fs = new FileStream(url, FileMode.Open) )
+            using (Stream stream = response.Content.ReadAsStreamAsync().Result)
             {
-                var wordsCount = _wordCounter.CountWords(fs);
+                var wordsCount = _wordCounter.CountWords(stream);
                 _persistance.AddOrUpdate(wordsCount);
-                fs.Close();
+                stream.Close();
             }
+            
 
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace WordCount.Application.Services.DataProcess
+namespace WordCount.Application.Services.Data
 {
     internal interface IWordCounter
     {

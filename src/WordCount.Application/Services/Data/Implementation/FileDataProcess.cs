@@ -4,7 +4,7 @@ using WordCount.Infrastructure;
 using WordCount.Infrastructure.PersistanceImplementaton;
 using WordCount.Infrastructure.Service;
 
-namespace WordCount.Application.Services.DataProcess
+namespace WordCount.Application.Services.Data.Implementation
 {
     internal class FileDataProcess : IFileDataProcess
     {
